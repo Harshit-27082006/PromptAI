@@ -1,0 +1,21 @@
+{
+  "name": "safewalk-ai",
+  "version": "2.0.0",
+  "description": "SafeWalk AI — Predictive Personal Safety Companion & Safety Net Platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "python server.py",
+    "test": "node test_engine.js",
+    "build": "node -e \"console.log('SafeWalk AI production build ready.')\""
+  },
+  "keywords": [
+    "safety",
+    "ai",
+    "safewalk",
+    "hackathon",
+    "predictive-safety",
+    "safety-net"
+  ],
+  "author": "SafeWalk AI Team",
+  "license": "MIT"
+}

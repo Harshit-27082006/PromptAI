@@ -1,15 +1,24 @@
 /**
- * SafeWalk AI - Automated Verification & Test Suite
- * Validates Phase 1 & Phase 2 AI Safety Intelligence Layer,
- * risk prediction, route advisor, behavior anomaly analysis, and alert prioritizer.
+ * SafeWalk AI - Comprehensive Automated Test Suite
+ * Validates Phase 1, Phase 2 AI Intelligence, and Phase 3 Backend/API Resilience.
  */
 
-// Mock window and global browser objects for node execution
+// Mock browser objects for node execution
 global.window = {};
+global.localStorage = (function() {
+  let store = {};
+  return {
+    getItem: (key) => store[key] || null,
+    setItem: (key, val) => { store[key] = String(val); },
+    removeItem: (key) => { delete store[key]; },
+    clear: () => { store = {}; }
+  };
+})();
 
 require('./js/data/initialData.js');
 require('./js/engine/routeUtils.js');
 require('./js/engine/riskEngine.js');
+require('./js/engine/apiClient.js');
 require('./js/ai/riskPrediction.js');
 require('./js/ai/routeAdvisor.js');
 require('./js/ai/behaviorAnalyzer.js');
@@ -18,9 +27,17 @@ require('./js/ai/alertPrioritizer.js');
 require('./js/ai/safetyExplainer.js');
 require('./js/ai/safetyIntelligence.js');
 
+const healthHandler = require('./api/health.js');
+const statusHandler = require('./api/safety/status.js');
+const eventHandler = require('./api/safety/event.js');
+const checkInHandler = require('./api/safety/check-in.js');
+const escalateHandler = require('./api/safety/escalate.js');
+const riskZonesHandler = require('./api/risk-zones.js');
+
 const initialData = global.window.SAFEWALK_INITIAL_DATA;
 const routeUtils = global.window.SAFEWALK_ROUTE_UTILS;
 const riskEngine = global.window.SAFEWALK_RISK_ENGINE;
+const apiClient = global.window.SAFEWALK_API_CLIENT;
 const riskPredictor = global.window.SAFEWALK_RISK_PREDICTOR;
 const routeAdvisor = global.window.SAFEWALK_ROUTE_ADVISOR;
 const behaviorAnalyzer = global.window.SAFEWALK_BEHAVIOR_ANALYZER;
@@ -195,8 +212,63 @@ assert(fullAIReport.routeAdvisor.recommendedRoute !== null, `AI Route Advisor sy
 assert(fullAIReport.behavior.behaviorStatus !== undefined, `Behavior kinematics synthesized`);
 assert(fullAIReport.hazards.clusters !== undefined, `Hazard clusters synthesized`);
 
+// ----------------------------------------------------
+// 9. Phase 3 Serverless API Handlers Tests
+// ----------------------------------------------------
+function mockReqRes(method = "GET", body = null) {
+  const headers = {};
+  let statusCode = 200;
+  let jsonBody = null;
+
+  const res = {
+    setHeader: (k, v) => { headers[k] = v; },
+    status: (code) => {
+      statusCode = code;
+      return res;
+    },
+    json: (data) => {
+      jsonBody = data;
+      return res;
+    },
+    end: () => res
+  };
+
+  const req = { method, body };
+  return { req, res, getStatus: () => statusCode, getBody: () => jsonBody };
+}
+
+// Test /api/health
+const hTest = mockReqRes("GET");
+healthHandler(hTest.req, hTest.res);
+assert(hTest.getStatus() === 200 && hTest.getBody().status === "ok", `GET /api/health returns status ok`);
+
+// Test /api/safety/status
+const sTest = mockReqRes("GET");
+statusHandler(sTest.req, sTest.res);
+assert(sTest.getStatus() === 200 && sTest.getBody().status === "monitoring", `GET /api/safety/status returns monitoring status`);
+
+// Test /api/safety/event
+const eTest = mockReqRes("POST", { eventType: "route_deviation", riskLevel: "warning" });
+eventHandler(eTest.req, eTest.res);
+assert(eTest.getStatus() === 200 && eTest.getBody().success === true, `POST /api/safety/event records telemetry`);
+
+// Test /api/safety/check-in
+const cTest = mockReqRes("POST", { sessionId: "test_1", status: "safe" });
+checkInHandler(cTest.req, cTest.res);
+assert(cTest.getStatus() === 200 && cTest.getBody().action === "RESET_TIMER", `POST /api/safety/check-in resets timer on safe confirmation`);
+
+// Test /api/safety/escalate
+const escTest = mockReqRes("POST", { reason: "User unresponsive", priority: "CRITICAL" });
+escalateHandler(escTest.req, escTest.res);
+assert(escTest.getStatus() === 200 && escTest.getBody().escalation === "simulated", `POST /api/safety/escalate creates simulated escalation`);
+
+// Test /api/risk-zones
+const rzTest = mockReqRes("GET");
+riskZonesHandler(rzTest.req, rzTest.res);
+assert(rzTest.getStatus() === 200 && rzTest.getBody().zones.length >= 4, `GET /api/risk-zones returns community risk zones (${rzTest.getBody().zones.length} zones)`);
+
 console.log("==================================================");
-console.log(`🎯 ALL AI TEST RESULTS: ${testsPassed} PASSED, ${testsFailed} FAILED`);
+console.log(`🎯 ALL AI & BACKEND TEST RESULTS: ${testsPassed} PASSED, ${testsFailed} FAILED`);
 console.log("==================================================");
 
 if (testsFailed > 0) process.exit(1);

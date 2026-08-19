@@ -1,100 +1,108 @@
-# SafeWalk AI v2.0 — Predictive Personal Safety Companion
+# SafeWalk AI v2.0 — Predictive Personal Safety Companion & Safety Network
 
 > **PromptWar Hackathon Entry** | Theme: **“Safety Net”**  
 > *“Don't wait for the emergency. Detect the unusual journey pattern early.”*
 
 ---
 
-## 🌟 Executive Summary & Phase 2 AI Innovation
+## 🌟 Executive Summary
 
 Most personal safety applications are purely **reactive**: they require a user in acute distress to unlock their phone, open an app, and manually press an emergency SOS button.
 
-**SafeWalk AI v2.0** introduces a comprehensive **AI Safety Intelligence Layer** on top of the real-time journey monitoring engine. Instead of merely displaying static scores, SafeWalk AI analyzes kinetic movement patterns, forecasts risk trajectories over 2m/5m/10m windows, detects spatial hazard clusters, recommends safer illuminated routes, and prioritizes emergency dispatches with explainable AI reasoning.
+**SafeWalk AI v2.0** establishes a complete, resilient **Safety Net**:
+1. **Understands & Evaluates:** Analyzes movement kinematics, time of day, route adherence, and safe havens.
+2. **Predicts & Explains:** Multi-window AI forecasting (2m/5m/10m) with transparent decision factors and safer route advice.
+3. **Proactive & Resilient:** Smart check-ins, **Auto-Escalation** if user becomes unresponsive during critical risk, **Hands-Free Spacebar trigger**, and **100% Offline Resilience**.
+4. **Scalable Network:** Community hazard intelligence and **Campus / Institutional Operations Center** for universities, tech parks, and residential safe communities.
 
 ```
 Traditional Safety Apps:
 [ Danger Strikes ] ──> [ User Struggles to Press SOS ] ──> [ Alert Sent ]
 
-SafeWalk AI Phase 1:
-[ Monitor Journey ] ──> [ Detect Deviation / Hazard ] ──> [ Proactive Check-In ] ──> [ Auto-Escalate ]
-
-SafeWalk AI Phase 2 (AI Intelligence Layer):
-[ Context Builder ] ──> [ Predict Rising Risk Trajectory ] ──> [ Kinematic Anomaly Detection ]
-                    ──> [ Spatial Hazard Cluster AI ] ──> [ Safer Route Advisor ]
-                    ──> [ Smart Alert Prioritization ] ──> [ Explainable Decision Support ]
+SafeWalk AI Safety Network:
+[ Monitor Journey ] ──> [ AI Forecasts Rising Risk ] ──> [ Kinematic Anomaly Detected ]
+                    ──> [ Proactive Check-In Prompt ] ──> [ User Unresponsive ]
+                    ──> [ Auto-Escalation Simulator ] ──> [ Trusted Contact & Campus Dispatch ]
+                    ──> [ Offline Queue Retries When Reconnected ]
 ```
 
 ---
 
-## 🧠 Phase 2 AI Intelligence Architecture
+## 🧠 Complete Architecture Overview
 
 ```
-User & Journey Telemetry (Speed, GPS, Deviation, Inactivity, Time, Hazards, Safe Zones)
-                                ↓
-                 Unified Safety Context Builder
-                                ↓
-      ┌────────────────────────────────────────────────────────┐
-      │          AI Safety Intelligence Coordinator            │
-      ├──────────────────┬──────────────────┬──────────────────┤
-      │  Risk Predictor  │  Route Advisor   │   Behavior AI    │
-      │ (2m/5m/10m Trend)│ (Safety Scoring) │ (Anomaly Kinem.) │
-      ├──────────────────┼──────────────────┼──────────────────┤
-      │  Hazard Cluster  │ Alert Prioritizer│ Safety Explainer │
-      │(Emerging Risk AI)│(CRITICAL/HIGH/MED│(Why & Next Steps)│
-      └──────────────────┴──────────────────┴──────────────────┘
-                                ↓
-          Actionable Recommendations & Live Sync Bus
-                                ↓
-                User Interface + Trusted Contact Console
+                        User & Journey Telemetry
+                                   ↓
+                     Unified Safety Context Builder
+                                   ↓
+     ┌────────────────────────────────────────────────────────────┐
+     │              AI Safety Intelligence Engine                 │
+     ├────────────────────┬───────────────────┬───────────────────┤
+     │   Risk Predictor   │   Route Advisor   │    Behavior AI    │
+     │ (2m/5m/10m Trends) │ (Safety Scoring)  │ (Kinematic Anom.) │
+     ├────────────────────┼───────────────────┼───────────────────┤
+     │ Hazard Cluster AI  │ Alert Prioritizer │  Safety Explainer │
+     │(Emerging Risk Area)│(CRITICAL Priority)│ (Why & Breakdown) │
+     └────────────────────┴───────────────────┴───────────────────┘
+                                   ↓
+                     Central Reactive Store & Event Bus
+                                   ↓
+      ┌────────────────────────────┬────────────────────────────┐
+      │   Client-Side Interface    │  Resilient REST API Layer  │
+      ├────────────────────────────┼────────────────────────────┤
+      │ • Walker Journey Planner   │ • GET  /api/health         │
+      │ • Live Interactive Map     │ • GET  /api/safety/status  │
+      │ • AI Intelligence Panel    │ • POST /api/safety/event   │
+      │ • Spacebar Hold Trigger    │ • POST /api/safety/check-in│
+      │ • "I Can't Talk" SOS View  │ • POST /api/safety/escalate│
+      │ • Trusted Contact Console  │ • GET  /api/risk-zones     │
+      │ • Institutional Dashboard  │ • Local Event Queueing     │
+      └────────────────────────────┴────────────────────────────┘
 ```
 
 ---
 
-## 🚀 Complete Feature Capabilities
+## 🚀 Key Feature Capabilities
 
-### 1. 🔮 AI Predictive Risk Engine (`riskPrediction.js`)
-* Analyzes current risk, time of day, movement velocity, deviation slope, and approaching hazard vectors.
-* Computes multi-window forecasts:
-  * **Next 2 Minutes**
-  * **Next 5 Minutes (Primary)**
-  * **Next 10 Minutes**
-* Classifies trend direction: `DECREASING` | `STABLE` | `INCREASING` | `RAPIDLY_INCREASING`.
-* Generates natural language trajectory forecasts (*e.g. "Risk is predicted to rise from 38 to 61 in the next 5 minutes because trajectory heads towards an unlit street segment."*).
+### 1. 🌐 Vercel-Ready REST API Layer & Offline Resilience
+* Built with zero-config serverless endpoints in `api/` and matched in `server.py`:
+  * `GET /api/health`: Service health and timestamp.
+  * `GET /api/safety/status`: Live session telemetry and risk status.
+  * `POST /api/safety/event`: Real-time safety telemetry sink.
+  * `POST /api/safety/check-in`: Handles check-in confirmations and resets safety interval.
+  * `POST /api/safety/escalate`: Simulated emergency escalation event.
+  * `GET /api/risk-zones`: Community risk zones and report metadata.
+* **Offline Local Mode:** When offline, the app switches to `● OFFLINE (LOCAL MODE)`. Events are safely queued in `localStorage` and automatically flushed when connectivity is restored.
 
-### 2. 🗺️ AI Risk-Aware Route Advisor (`routeAdvisor.js`)
-* Intelligently compares candidate routes based on multi-factor safety formula:
-  $$\text{Route Safety Score} = 100 - \text{Hazard Penalty} - \text{Isolation Cost} - \text{Distance Exposure} + \text{Safe Zone Bonus} - \text{Night Penalty}$$
-* Generates 3 candidate paths:
-  1. **Route A (Shortcut):** Shortest distance, but passes through unlit alleys (Score: 58/100).
-  2. **Route B (AI Recommended):** Well-lit commercial avenue with 7-Eleven Safe Hub and Police Precinct (Score: 86–98/100).
-  3. **Route C (Alternative):** Long boulevard perimeter with active traffic (Score: 78/100).
-* Renders the **AI Recommended Safer Route** directly on the interactive Leaflet map.
+### 2. ⚡ Hands-Free & Rapid Emergency Trigger (`HandsFreeTrigger.js`)
+* **2-Second Spacebar Hold:** Hold the spacebar anywhere to trigger SOS with a live visual progress circle.
+* **Keyboard Shortcut:** Press `Shift + E` for instantaneous silent emergency mode.
+* **Voice Trigger Simulator:** Optional Web Speech recognition listening for *"HELP"* or *"SAFEWALK SOS"*.
 
-### 3. 🛑 Behavior Anomaly Detector (`behaviorAnalyzer.js`)
-* Monitors kinetic patterns: sudden stops, prolonged inactivity, backtracking / path reversals, and repeated route departure.
-* Generates an **Anomaly Score (0–100)** and classifies status (`NORMAL`, `UNUSUAL`, `HIGHLY_UNUSUAL`).
-* Automatically prompts proactive Smart Check-Ins when unusual movement is detected.
+### 3. 🚨 Auto-Escalation Simulator
+* If a critical risk state occurs and the user does not respond to a Smart Check-In within the timeout window, the system automatically escalates:
+  * Triggers 5-second cancel countdown.
+  * Initiates **AUTO-ESCALATION ACTIVE (SIMULATED)**.
+  * Broadcasts live GPS coordinates and incident reason to the Trusted Contact and Campus Dispatch.
 
-### 4. ⚠️ Community Hazard Intelligence & Cluster AI (`hazardIntelligence.js`)
-* Groups nearby crowdsourced reports into spatial clusters ($\le 300\text{m}$ radius).
-* Detects **Emerging Risk Areas** (e.g. 3 broken streetlights + 1 harassment report in a 250m radius).
-* Visualizes pulsing cluster zones on the map with contributing report breakdowns.
+### 4. 🏛️ Campus & Institutional Operations Dashboard (`InstitutionalDashboard.js`)
+* Real-time monitoring for Universities, Corporate Parks, and Residential RWAs:
+  * Live metrics: Active Walkers, Active Journeys, Blue Light Kiosks (18 operational), Hazard Zones, Average Response Time (1.4m).
+  * 1-Click Rapid Patrol Escort Dispatch simulator.
+  * Campus Blue Light Kiosk network and safe pedestrian corridors.
 
-### 5. 🚨 Smart Alert Prioritization (`alertPrioritizer.js`)
-* Evaluates emergency incidents to assign intelligent priority levels: `LOW` | `MEDIUM` | `HIGH` | `CRITICAL`.
-* Contextualizes alerts with risk acceleration, behavior status, and specific recommended contact actions (*e.g. "Attempt telephone contact immediately and guide user toward Central Police Precinct 180m away."*).
+### 5. 🔮 AI Predictive Risk Engine (`riskPrediction.js`)
+* Computes multi-window forecasts (2m, 5m, 10m) with directional trend indicators (`DECREASING`, `STABLE`, `INCREASING`, `RAPIDLY_INCREASING`).
+* Generates natural language trajectory explanations.
 
-### 6. 💬 Transparent Safety Explainer (`safetyExplainer.js`)
-* Accessible, human-friendly explainability breakdown (*"How did AI decide?"*) showing mathematical factor impacts ($+18$ Route departure, $+14$ Hazard proximity, $-12$ Safe haven nearby).
-* Generates contextual *"Why this recommendation?"* bullet points.
+### 6. 🗺️ AI Risk-Aware Route Advisor (`routeAdvisor.js`)
+* Evaluates 3 candidate routes (Shortcut, AI Recommended, Alternative) based on illumination, hazard density, and safe zone proximity.
 
-### 7. 🤫 Single-Tap "I Can't Talk" Silent SOS Mode
-* Zero typing required: automatically transmits live GPS coordinates and initiates stealth escape guidance.
-* 1-tap canned silent status updates (*"I am hiding"*, *"Someone is following me"*, *"Entered safe building"*).
+### 7. 🛑 Behavior Anomaly Detector (`behaviorAnalyzer.js`)
+* Detects sudden stops, prolonged stationary periods, and backtracking.
 
-### 8. 👥 Live-Synchronized Trusted Contact Dashboard
-* Multi-tab real-time sync powered by `BroadcastChannel` and `LocalStorage`.
-* Real-time AI Alert Assessment card with siren alerts, telemetry map, and simulated dispatch actions.
+### 8. 🛡️ Robust Fail-Safe Error Boundary (`ErrorBoundary.js`)
+* Wraps the application in a React Error Boundary ensuring that an unexpected error never produces a blank screen.
 
 ---
 
@@ -102,28 +110,19 @@ User & Journey Telemetry (Speed, GPS, Deviation, Inactivity, Time, Hazards, Safe
 
 Access the **⚡ Hackathon Demo Suite** in the navigation bar to test all 10 judge scenarios:
 
-| # | Scenario Name | Status | Key AI Highlight |
-|---|---------------|--------|------------------|
+| # | Scenario Name | Status | Key Highlight |
+|---|---------------|--------|---------------|
 | 🟢 **1** | Normal Safe Walk | `GREEN` | Steady on-route daytime walking; risk remains low. |
-| 🟡 **2** | Route Deviation | `YELLOW` | Off-route detour into unlit alley at 11 PM; deviation warning shown. |
-| 🔴 **3** | Missed Check-In Escalation | `RED` | Check-in prompt times out -> 5s countdown -> Emergency dispatched. |
+| 🟡 **2** | Route Deviation | `YELLOW` | Off-route detour into unlit alley at 11 PM. |
+| 🔴 **3** | Missed Check-In Escalation | `RED` | Check-in prompt times out -> Auto-Escalation countdown. |
 | 🤫 **4** | "I Can't Talk" Silent SOS | `RED` | 1-tap zero-typing stealth emergency with safe haven routing. |
 | ⚠️ **5** | Community Hazard Pin | `YELLOW` | Real-time injection of community hazard into path. |
-| 🔮 **6** | **AI Predicts Rising Risk** | `YELLOW → RED` | Forecasts rising trajectory ($38 \to 71$ in 5m) before danger occurs. |
-| 🗺️ **7** | **AI Safer Route Advisor** | `GREEN` | Evaluates 3 candidate routes and recommends Route B (Score 86/100). |
-| 🛑 **8** | **Behavior Anomaly** | `YELLOW` | Detects sudden stop + backtracking; Anomaly Score: 82. |
-| ⚠️ **9** | **Emerging Community Risk** | `YELLOW` | Detects high-density hazard cluster within 250m. |
-| 🚨 **10**| **Smart Alert Prioritization** | `CRITICAL` | Dispatches enriched CRITICAL assessment to Trusted Contact. |
+| 🔮 **6** | AI Predicts Rising Risk | `YELLOW → RED` | Forecasts rising trajectory ($38 \to 71$ in 5m). |
+| 🗺️ **7** | AI Safer Route Advisor | `GREEN` | Evaluates 3 candidate routes, recommends Route B (Score 98/100). |
+| 🛑 **8** | Behavior Anomaly Detection | `YELLOW` | Detects sudden stop + backtracking; Anomaly Score: 82. |
+| ⚠️ **9** | Emerging Community Risk | `YELLOW` | Detects high-density hazard cluster within 250m. |
+| 🚨 **10**| Smart Alert Prioritization | `CRITICAL` | Dispatches enriched CRITICAL assessment to Trusted Contact. |
 | 🎬 | **2-Min Automated Demo Flow** | `ALL` | Fully narrated end-to-end judge walkthrough running in 2 minutes. |
-
----
-
-## 🔒 Safety Principles & Ethical Guardrails
-
-1. **Decision-Support Tool:** The risk score is clearly labelled as a **predictive journey-risk indicator**, not statistical crime prediction.
-2. **Honesty & Transparency:** The application does not falsely claim real police dispatch or carrier SMS integration; alerts are delivered via the integrated real-time notification/dashboard event bus.
-3. **Privacy First:** Only necessary location telemetry is processed, with zero third-party tracking.
-4. **AI Provider Abstraction:** Built with `LocalSafetyAIProvider` ensuring complete zero-dependency, deterministic offline operation without requiring external API keys.
 
 ---
 
@@ -138,8 +137,8 @@ Open your browser at:
 http://localhost:8000
 ```
 
-### Option B: Run Automated AI Test Suite
+### Option B: Run Automated Test Suite
 ```powershell
 node test_engine.js
 ```
-*Executes all 27 unit tests validating geodesic routing, risk prediction, route advisor scoring, behavior anomaly detection, and hazard clustering.*
+*Executes all 33 unit and integration tests validating geodesics, AI predictions, route scoring, behavior anomaly kinematics, hazard clustering, and serverless REST APIs.*

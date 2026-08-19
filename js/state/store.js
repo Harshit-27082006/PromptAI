@@ -1,7 +1,7 @@
 /**
  * SafeWalk AI - Central Reactive State Store & Cross-Tab Event Bus
- * Synchronizes state between Walker view and Trusted Contact Dashboard via BroadcastChannel.
- * Enhanced with Phase 2 AI Safety Intelligence Layer.
+ * Synchronizes state between Walker view, Trusted Contact Dashboard, and Institutional Operations.
+ * Enhanced with Phase 2 AI Intelligence, Auto-Escalation, and Resilient API Client Synchronization.
  */
 
 window.SAFEWALK_STORE = (function() {
@@ -24,7 +24,7 @@ window.SAFEWALK_STORE = (function() {
     const defaultRoute = initialData.presetRoutes ? initialData.presetRoutes[0] : null;
 
     return {
-      activeView: "walker", // "walker" | "trusted_dashboard" | "demo_tour"
+      activeView: "walker", // "walker" | "trusted_dashboard" | "institutional" | "demo_tour"
       user: initialData.defaultUser || {
         name: "Rahul Sharma",
         phone: "+1 (555) 234-8901",
@@ -89,18 +89,20 @@ window.SAFEWALK_STORE = (function() {
         countdownSeconds: 5,
         isEmergencyDispatched: false,
         isCantTalkMode: false,
+        isAutoEscalated: false,
         activeAlert: null,
         alertHistory: []
       },
       safeZones: initialData.safeZones || [],
       hazards: initialData.initialHazards || [],
+      riskZones: [],
       auditLog: [
         {
           id: "log_init",
           timestamp: new Date().toISOString(),
           type: "system",
           title: "SafeWalk AI v2.0 Initialized",
-          details: "AI Safety Intelligence layer active with predictive modeling and behavior analytics."
+          details: "Resilient Safety Network active with predictive AI modeling, offline event queue, and institutional operations."
         }
       ],
       soundMuted: false,
@@ -161,6 +163,7 @@ window.SAFEWALK_STORE = (function() {
           state.emergency.activeAlert.status = "RESOLVED";
         }
         state.emergency.isEmergencyDispatched = false;
+        state.emergency.isAutoEscalated = false;
         notifyListeners();
       }
     };
@@ -206,6 +209,16 @@ window.SAFEWALK_STORE = (function() {
     persistState();
     broadcast("STATE_SYNC", state);
     notifyListeners();
+
+    // Async sync to backend
+    if (window.SAFEWALK_API_CLIENT) {
+      window.SAFEWALK_API_CLIENT.updateSafetyStatus({
+        status: state.emergency.isEmergencyDispatched ? "emergency" : (state.journey.isActive ? "active_walk" : "monitoring"),
+        riskLevel: state.risk.status.toLowerCase(),
+        riskScore: state.risk.score,
+        lastCheckIn: state.checkIn.lastCheckInTime
+      }).catch(() => {});
+    }
   }
 
   function addLog(title, details, type = "info") {
@@ -219,6 +232,21 @@ window.SAFEWALK_STORE = (function() {
     state.auditLog.unshift(newLog);
     if (state.auditLog.length > 50) {
       state.auditLog.pop();
+    }
+
+    // Send telemetry event to backend / offline queue
+    if (window.SAFEWALK_API_CLIENT) {
+      window.SAFEWALK_API_CLIENT.postSafetyEvent({
+        eventType: type,
+        riskLevel: state.risk.status.toLowerCase(),
+        riskScore: state.risk.score,
+        location: {
+          lat: (state.journey.currentCoords || [37.7752, -122.4245])[0],
+          lng: (state.journey.currentCoords || [37.7752, -122.4245])[1]
+        },
+        details: `${title}: ${details}`,
+        timestamp: newLog.timestamp
+      }).catch(() => {});
     }
   }
 
@@ -323,6 +351,7 @@ window.SAFEWALK_STORE = (function() {
       countdownSeconds: 5,
       isEmergencyDispatched: false,
       isCantTalkMode: false,
+      isAutoEscalated: false,
       activeAlert: null
     };
 
@@ -403,6 +432,12 @@ window.SAFEWALK_STORE = (function() {
       state.checkIn.isExpired = false;
 
       addLog("Check-In Confirmed: Safe", `User confirmed safety. Next check-in in ${Math.round(state.checkIn.checkInIntervalSeconds)}s.`, "checkin");
+
+      // Notify backend
+      if (window.SAFEWALK_API_CLIENT) {
+        window.SAFEWALK_API_CLIENT.postCheckIn("safe", state.journey.id || "session_default").catch(() => {});
+      }
+
       recalculateRisk();
       persistState();
       broadcast("STATE_SYNC", state);
@@ -424,14 +459,17 @@ window.SAFEWALK_STORE = (function() {
     state.checkIn.isModalOpen = false;
     state.checkIn.isPending = false;
 
-    addLog("Smart Check-In Expired", "No response received within timeout window. Initiating emergency escalation.", "emergency");
-    startEmergencyCountdown("Missed safety check-in during active journey");
+    addLog("Smart Check-In Expired", "No response received within timeout window. Initiating auto-escalation.", "emergency");
+    
+    // Auto-escalation trigger
+    startEmergencyCountdown("Missed safety check-in during active journey", true);
   }
 
-  function startEmergencyCountdown(reason = "Emergency SOS Triggered") {
+  function startEmergencyCountdown(reason = "Emergency SOS Triggered", isAuto = false) {
     state.emergency.isCountdownActive = true;
     state.emergency.countdownSeconds = 5;
     state.emergency.pendingReason = reason;
+    state.emergency.isAutoEscalated = isAuto;
 
     persistState();
     broadcast("STATE_SYNC", state);
@@ -447,6 +485,7 @@ window.SAFEWALK_STORE = (function() {
     state.emergency.isCountdownActive = false;
     state.emergency.countdownSeconds = 5;
     state.emergency.pendingReason = null;
+    state.emergency.isAutoEscalated = false;
     state.checkIn.isExpired = false;
 
     addLog("Emergency Alert Cancelled", "Countdown cancelled by user. Safe status restored.", "info");
@@ -499,6 +538,15 @@ window.SAFEWALK_STORE = (function() {
     state.emergency.activeAlert = alertEvent;
     state.emergency.alertHistory.unshift(alertEvent);
 
+    // Call backend escalate API
+    if (window.SAFEWALK_API_CLIENT) {
+      window.SAFEWALK_API_CLIENT.postEscalate(
+        reason,
+        { lat: j.currentCoords[0], lng: j.currentCoords[1] },
+        aiAssessment?.priority || "CRITICAL"
+      ).catch(() => {});
+    }
+
     addLog("🚨 EMERGENCY ALERT DISPATCHED", `Dispatched AI-prioritized alert to ${state.user.trustedContact.name}. Priority: ${aiAssessment?.priority || 'CRITICAL'}`, "emergency");
     recalculateRisk();
     persistState();
@@ -549,6 +597,14 @@ window.SAFEWALK_STORE = (function() {
     state.emergency.activeAlert = alertEvent;
     state.emergency.alertHistory.unshift(alertEvent);
 
+    if (window.SAFEWALK_API_CLIENT) {
+      window.SAFEWALK_API_CLIENT.postEscalate(
+        "SILENT SOS: User activated 'I Can't Talk' Emergency Mode",
+        { lat: j.currentCoords[0], lng: j.currentCoords[1] },
+        "CRITICAL"
+      ).catch(() => {});
+    }
+
     addLog("🚨 SILENT SOS: 'I Can't Talk' Activated", "Zero-typing emergency mode active. Safe zones mapped.", "emergency");
     recalculateRisk();
     persistState();
@@ -579,6 +635,7 @@ window.SAFEWALK_STORE = (function() {
     }
     state.emergency.isEmergencyDispatched = false;
     state.emergency.isCantTalkMode = false;
+    state.emergency.isAutoEscalated = false;
     state.checkIn.isExpired = false;
 
     addLog("Alert Resolved", resolutionNotes, "info");
@@ -633,6 +690,19 @@ window.SAFEWALK_STORE = (function() {
 
     state.hazards.unshift(newHazard);
     addLog("Community Hazard Reported", `${newHazard.category} (${newHazard.severity}) added to live safety map.`, "hazard");
+
+    // Sync to backend risk zones
+    if (window.SAFEWALK_API_CLIENT) {
+      window.SAFEWALK_API_CLIENT.postRiskZone({
+        name: newHazard.category,
+        category: newHazard.categoryKey,
+        categoryLabel: newHazard.category,
+        riskLevel: newHazard.severity.toLowerCase(),
+        coords: newHazard.coords,
+        description: newHazard.description
+      }).catch(() => {});
+    }
+
     recalculateRisk();
     persistState();
     broadcast("STATE_SYNC", state);

@@ -1,9 +1,9 @@
 /**
  * SafeWalk AI - Main Root Application Component
- * Enhanced with Phase 2 AI Safety Intelligence Layer.
+ * Enhanced with Institutional Operations Dashboard, Hands-Free Controls, and Error Boundary.
  */
 
-window.SAFEWALK_APP = function() {
+window.SAFEWALK_APP_INNER = function() {
   const [state, setState] = React.useState(window.SAFEWALK_STORE.getState());
   const h = React.createElement;
 
@@ -76,10 +76,13 @@ window.SAFEWALK_APP = function() {
       // 2. View Switching Content
       state.activeView === 'trusted_dashboard'
         ? h(window.SAFEWALK_TRUSTED_DASHBOARD, { state })
+        : state.activeView === 'institutional'
+        ? h(window.SAFEWALK_INSTITUTIONAL_DASHBOARD, { state })
         : state.activeView === 'demo_tour'
         ? h('div', { className: 'space-y-5' }, [
             h(window.SAFEWALK_DEMO_TOOLBAR, { state, onSelectView: handleSelectView }),
             h(window.SAFEWALK_AI_PANEL, { state }),
+            h(window.SAFEWALK_HANDS_FREE, { state }),
             h('div', { className: 'grid grid-cols-1 lg:grid-cols-3 gap-5' }, [
               h('div', { className: 'lg:col-span-2 space-y-4' }, [
                 h(window.SAFEWALK_MAP, { state })
@@ -104,6 +107,7 @@ window.SAFEWALK_APP = function() {
                   h('div', { className: 'text-xs font-bold text-slate-300 uppercase tracking-wider mb-2' }, 'Preview Area Safe Havens & AI Routes'),
                   h(window.SAFEWALK_MAP, { state })
                 ]),
+                h(window.SAFEWALK_HANDS_FREE, { state }),
                 h(window.SAFEWALK_SAFE_ZONES_PANEL, { state })
               ])
             ]),
@@ -117,6 +121,7 @@ window.SAFEWALK_APP = function() {
               // Left Column: Active Walk Telemetry & Actions (5 cols on lg)
               h('div', { className: 'lg:col-span-5 space-y-4' }, [
                 h(window.SAFEWALK_ACTIVE_JOURNEY, { state }),
+                h(window.SAFEWALK_HANDS_FREE, { state }),
                 h(window.SAFEWALK_SAFE_ZONES_PANEL, { state })
               ]),
 
@@ -134,7 +139,8 @@ window.SAFEWALK_APP = function() {
       }, [
         h('button', {
           onClick: () => handleSelectView('demo_tour'),
-          className: 'px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold text-xs shadow-2xl shadow-amber-600/50 border border-amber-400 flex items-center gap-2 transition transform hover:scale-105'
+          'aria-label': 'Open Hackathon Demo Suite',
+          className: 'px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold text-xs shadow-2xl shadow-amber-600/50 border border-amber-400 flex items-center gap-2 transition transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-amber-400'
         }, [
           h(window.SAFEWALK_ICONS.Zap, { className: 'w-4 h-4 text-amber-200' }),
           h('span', null, '⚡ Hackathon Demo Suite')
@@ -153,8 +159,16 @@ window.SAFEWALK_APP = function() {
         h('span', null, '•'),
         h('span', null, 'PromptWar Hackathon ("Safety Net" Theme)'),
         h('span', null, '•'),
-        h('span', { className: 'text-slate-400' }, 'AI Predictive Safety Intelligence')
+        h('span', { className: 'text-slate-400' }, 'Decision-Support & Predictive Journey-Risk Network')
       ])
     ])
   ]);
+};
+
+window.SAFEWALK_APP = function() {
+  const h = React.createElement;
+  if (window.SAFEWALK_ERROR_BOUNDARY) {
+    return h(window.SAFEWALK_ERROR_BOUNDARY, null, h(window.SAFEWALK_APP_INNER));
+  }
+  return h(window.SAFEWALK_APP_INNER);
 };

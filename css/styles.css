@@ -1,4 +1,4 @@
-/* SafeWalk AI - Custom Styling & Animations */
+/* SafeWalk AI - Custom Styling & Accessible Animations */
 
 :root {
   --color-safe: #10B981;
@@ -30,6 +30,12 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #475569;
+}
+
+/* Accessibility Focus Ring Enhancements */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid #10B981 !important;
+  outline-offset: 2px !important;
 }
 
 /* Pulse Radar Animations */
@@ -64,6 +70,19 @@ body {
 
 .siren-active {
   animation: siren-flash 0.8s ease-in-out infinite;
+}
+
+/* Reduced-Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .radar-wave, .siren-active {
+    animation: none !important;
+  }
 }
 
 /* Leaflet Map Overrides */

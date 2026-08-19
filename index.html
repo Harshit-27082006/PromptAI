@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SafeWalk AI — Predictive Personal Safety Companion</title>
-  <meta name="description" content="SafeWalk AI is a predictive personal safety companion that continuously monitors your journey, predicts rising risk, detects movement anomalies, and identifies emerging hazard patterns.">
+  <title>SafeWalk AI — Predictive Personal Safety Companion & Safety Network</title>
+  <meta name="description" content="SafeWalk AI is a predictive personal safety companion and resilient safety network that monitors your journey, predicts rising risk, detects movement anomalies, and auto-escalates in emergencies.">
   <meta name="theme-color" content="#0B0F19">
 
   <!-- Tailwind CSS CDN -->
@@ -61,11 +61,12 @@
   <!-- App Mount Root -->
   <div id="root"></div>
 
-  <!-- 1. Core Data & Geodesic Utilities -->
+  <!-- 1. Core Data, Geodesic Utilities & API Client -->
   <script src="js/data/initialData.js"></script>
   <script src="js/engine/routeUtils.js"></script>
   <script src="js/engine/riskEngine.js"></script>
   <script src="js/engine/audioEngine.js"></script>
+  <script src="js/engine/apiClient.js"></script>
 
   <!-- 2. Phase 2 AI Safety Intelligence Layer -->
   <script src="js/ai/riskPrediction.js"></script>
@@ -79,11 +80,13 @@
   <!-- 3. Central Reactive Store & Event Bus -->
   <script src="js/state/store.js"></script>
 
-  <!-- 4. UI Components -->
+  <!-- 4. UI Components & Fail-Safe Error Boundary -->
+  <script src="js/components/ErrorBoundary.js"></script>
   <script src="js/components/Icons.js"></script>
   <script src="js/components/Navbar.js"></script>
   <script src="js/components/SafetyBanner.js"></script>
   <script src="js/components/AISafetyIntelligencePanel.js"></script>
+  <script src="js/components/HandsFreeTrigger.js"></script>
   <script src="js/components/JourneyPlanner.js"></script>
   <script src="js/components/ActiveJourneyPanel.js"></script>
   <script src="js/components/InteractiveMap.js"></script>
@@ -93,6 +96,7 @@
   <script src="js/components/SafeZonesPanel.js"></script>
   <script src="js/components/CommunityHazardsPanel.js"></script>
   <script src="js/components/TrustedDashboard.js"></script>
+  <script src="js/components/InstitutionalDashboard.js"></script>
   <script src="js/components/DemoToolbar.js"></script>
   <script src="js/app.js"></script>
 
