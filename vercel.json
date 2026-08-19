@@ -1,33 +1,3 @@
 {
   "version": 2,
-  "routes": [
-    {
-      "src": "/api/safety/status",
-      "dest": "/api/safety/status.js"
-    },
-    {
-      "src": "/api/safety/event",
-      "dest": "/api/safety/event.js"
-    },
-    {
-      "src": "/api/safety/check-in",
-      "dest": "/api/safety/check-in.js"
-    },
-    {
-      "src": "/api/safety/escalate",
-      "dest": "/api/safety/escalate.js"
-    },
-    {
-      "src": "/api/health",
-      "dest": "/api/health.js"
-    },
-    {
-      "src": "/api/risk-zones",
-      "dest": "/api/risk-zones.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ]
 }
