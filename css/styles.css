@@ -1,0 +1,140 @@
+/* SafeWalk AI - Custom Styling & Animations */
+
+:root {
+  --color-safe: #10B981;
+  --color-attention: #F59E0B;
+  --color-danger: #EF4444;
+  --color-bg-dark: #0B0F19;
+  --color-card-dark: #111827;
+  --color-border: #1F2937;
+}
+
+body {
+  background-color: var(--color-bg-dark);
+  color: #F3F4F6;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0F172A;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Pulse Radar Animations */
+@keyframes radar-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.radar-wave {
+  animation: radar-pulse 2.2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes siren-flash {
+  0%, 100% {
+    background-color: rgba(239, 68, 68, 0.15);
+    box-shadow: inset 0 0 40px rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    background-color: rgba(239, 68, 68, 0.35);
+    box-shadow: inset 0 0 80px rgba(239, 68, 68, 0.7);
+  }
+}
+
+.siren-active {
+  animation: siren-flash 0.8s ease-in-out infinite;
+}
+
+/* Leaflet Map Overrides */
+.leaflet-container {
+  background-color: #0d131f !important;
+  font-family: inherit;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #111827 !important;
+  color: #F3F4F6 !important;
+  border: 1px solid #374151 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-popup-tip {
+  background: #111827 !important;
+  border-color: #374151 !important;
+}
+
+.leaflet-popup-content {
+  margin: 10px 14px !important;
+  line-height: 1.4 !important;
+}
+
+/* Custom Marker Styling */
+.user-marker-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.safe-zone-marker {
+  transition: transform 0.2s ease;
+}
+.safe-zone-marker:hover {
+  transform: scale(1.18);
+  z-index: 1000 !important;
+}
+
+.hazard-marker {
+  transition: transform 0.2s ease;
+}
+.hazard-marker:hover {
+  transform: scale(1.18);
+  z-index: 1000 !important;
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: rgba(17, 24, 39, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-danger {
+  background: rgba(30, 10, 10, 0.9);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Glowing text and borders */
+.glow-green {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+}
+.glow-amber {
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
+}
+.glow-red {
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.55);
+}

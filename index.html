@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SafeWalk AI — Predictive Personal Safety Companion</title>
+  <meta name="description" content="SafeWalk AI is a predictive personal safety companion that continuously monitors your journey, predicts rising risk, detects movement anomalies, and identifies emerging hazard patterns.">
+  <meta name="theme-color" content="#0B0F19">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            safe: '#10B981',
+            attention: '#F59E0B',
+            danger: '#EF4444',
+            darkBg: '#0B0F19',
+            darkCard: '#111827'
+          },
+          animation: {
+            'fadeIn': 'fadeIn 0.25s ease-out forwards',
+            'scaleUp': 'scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            'bounce-subtle': 'bounceSubtle 2s infinite'
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' }
+            },
+            scaleUp: {
+              '0%': { opacity: '0', transform: 'scale(0.95)' },
+              '100%': { opacity: '1', transform: 'scale(1)' }
+            },
+            bounceSubtle: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-4px)' }
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Leaflet Map CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- React 18 & ReactDOM 18 -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased selection:bg-emerald-500 selection:text-slate-950">
+
+  <!-- App Mount Root -->
+  <div id="root"></div>
+
+  <!-- 1. Core Data & Geodesic Utilities -->
+  <script src="js/data/initialData.js"></script>
+  <script src="js/engine/routeUtils.js"></script>
+  <script src="js/engine/riskEngine.js"></script>
+  <script src="js/engine/audioEngine.js"></script>
+
+  <!-- 2. Phase 2 AI Safety Intelligence Layer -->
+  <script src="js/ai/riskPrediction.js"></script>
+  <script src="js/ai/routeAdvisor.js"></script>
+  <script src="js/ai/behaviorAnalyzer.js"></script>
+  <script src="js/ai/hazardIntelligence.js"></script>
+  <script src="js/ai/alertPrioritizer.js"></script>
+  <script src="js/ai/safetyExplainer.js"></script>
+  <script src="js/ai/safetyIntelligence.js"></script>
+
+  <!-- 3. Central Reactive Store & Event Bus -->
+  <script src="js/state/store.js"></script>
+
+  <!-- 4. UI Components -->
+  <script src="js/components/Icons.js"></script>
+  <script src="js/components/Navbar.js"></script>
+  <script src="js/components/SafetyBanner.js"></script>
+  <script src="js/components/AISafetyIntelligencePanel.js"></script>
+  <script src="js/components/JourneyPlanner.js"></script>
+  <script src="js/components/ActiveJourneyPanel.js"></script>
+  <script src="js/components/InteractiveMap.js"></script>
+  <script src="js/components/SmartCheckInModal.js"></script>
+  <script src="js/components/EmergencyCountdownModal.js"></script>
+  <script src="js/components/CantTalkEmergencyView.js"></script>
+  <script src="js/components/SafeZonesPanel.js"></script>
+  <script src="js/components/CommunityHazardsPanel.js"></script>
+  <script src="js/components/TrustedDashboard.js"></script>
+  <script src="js/components/DemoToolbar.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Application Bootstrap -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const rootElement = document.getElementById('root');
+      if (rootElement && window.SAFEWALK_APP) {
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(React.createElement(window.SAFEWALK_APP));
+      }
+    });
+  </script>
+</body>
+</html>
