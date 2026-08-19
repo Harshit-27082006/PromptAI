@@ -4,7 +4,7 @@
  * route comparisons, and explainable AI recommendations.
  */
 
-window.SAFEWALK_AI_PANEL = function(props) {
+window.SAFEWALK_AI_PANEL = function (props) {
   const { state } = props;
   const Icons = window.SAFEWALK_ICONS;
   const h = React.createElement;
@@ -83,11 +83,10 @@ window.SAFEWALK_AI_PANEL = function(props) {
       h('div', { className: 'flex items-center gap-2 self-start sm:self-auto' }, [
         h('button', {
           onClick: () => setShowRouteAdvisor(!showRouteAdvisor),
-          className: `px-3 py-1.5 rounded-xl text-xs font-bold transition border flex items-center gap-1.5 ${
-            showRouteAdvisor
+          className: `px-3 py-1.5 rounded-xl text-xs font-bold transition border flex items-center gap-1.5 ${showRouteAdvisor
               ? 'bg-cyan-600 text-white border-cyan-400 shadow'
               : 'bg-slate-800 text-cyan-400 border-slate-700 hover:bg-slate-750'
-          }`
+            }`
         }, [
           h(Icons.Compass, { className: 'w-3.5 h-3.5' }),
           h('span', null, showRouteAdvisor ? 'Hide Route Advisor' : 'Route Advisor (3 Options)')
@@ -157,13 +156,12 @@ window.SAFEWALK_AI_PANEL = function(props) {
 
     // 3. Actionable AI Recommendation Box (Prompt Requirement #8 & #9)
     h('div', {
-      className: `p-4 sm:p-5 rounded-2xl border ${
-        explanation.recommendationLevel === 'critical'
+      className: `p-4 sm:p-5 rounded-2xl border ${explanation.recommendationLevel === 'critical'
           ? 'bg-red-950/60 border-red-500/40 text-red-200'
           : (explanation.recommendationLevel === 'warning'
-              ? 'bg-amber-950/60 border-amber-500/40 text-amber-200'
-              : 'bg-emerald-950/40 border-emerald-500/30 text-emerald-200')
-      } space-y-3 relative z-10`
+            ? 'bg-amber-950/60 border-amber-500/40 text-amber-200'
+            : 'bg-emerald-950/40 border-emerald-500/30 text-emerald-200')
+        } space-y-3 relative z-10`
     }, [
       h('div', { className: 'flex items-center justify-between' }, [
         h('div', { className: 'flex items-center gap-2' }, [
@@ -173,89 +171,89 @@ window.SAFEWALK_AI_PANEL = function(props) {
         h('span', { className: 'text-[10px] font-bold uppercase bg-white/10 px-2 py-0.5 rounded-full text-white' },
           explanation.recommendationTitle
         ])
-      ]),
+    ]),
 
-      h('p', { className: 'text-sm font-semibold text-white leading-relaxed' },
-        `“${explanation.recommendationText}”`
-      ),
+    h('p', { className: 'text-sm font-semibold text-white leading-relaxed' },
+      `“${explanation.recommendationText}”`
+    ),
+  ])
 
-      // "Why this recommendation?" Section (Prompt Requirement #9)
-      h('div', { className: 'pt-2 border-t border-white/10 space-y-1.5' }, [
-        h('div', { className: 'text-[11px] font-bold text-slate-300 uppercase tracking-wide' }, 'Why this recommendation?'),
-        h('div', { className: 'grid grid-cols-1 sm:grid-cols-3 gap-2' }, [
-          ...explanation.whyPoints.map((pt, idx) =>
-            h('div', { key: idx, className: 'bg-black/30 p-2 rounded-xl text-xs text-slate-200 flex items-center gap-1.5' }, [
-              h('span', { className: 'text-emerald-400 font-bold' }, '•'),
-              h('span', null, pt)
-            ])
-          )
+  // "Why this recommendation?" Section (Prompt Requirement #9)
+  h('div', { className: 'pt-2 border-t border-white/10 space-y-1.5' }, [
+    h('div', { className: 'text-[11px] font-bold text-slate-300 uppercase tracking-wide' }, 'Why this recommendation?'),
+    h('div', { className: 'grid grid-cols-1 sm:grid-cols-3 gap-2' }, [
+      ...explanation.whyPoints.map((pt, idx) =>
+        h('div', { key: idx, className: 'bg-black/30 p-2 rounded-xl text-xs text-slate-200 flex items-center gap-1.5' }, [
+          h('span', { className: 'text-emerald-400 font-bold' }, '•'),
+          h('span', null, pt)
         ])
-      ])
-    ]),
-
-    // 4. Route Advisor (3 Candidate Routes) Expansion
-    showRouteAdvisor && h('div', {
-      className: 'bg-slate-950/90 border border-cyan-500/40 rounded-2xl p-4 sm:p-5 space-y-4 animate-fadeIn relative z-10'
-    }, [
-      h('div', { className: 'flex items-center justify-between pb-2 border-b border-slate-800' }, [
-        h('div', { className: 'flex items-center gap-2' }, [
-          h(Icons.Compass, { className: 'w-4 h-4 text-cyan-400' }),
-          h('span', { className: 'text-xs font-bold text-white uppercase tracking-wider' }, 'AI Candidate Route Comparison')
-        ]),
-        h('span', { className: 'text-[11px] text-slate-400' }, 'Safety Score > Shortest Distance')
-      ]),
-
-      h('div', { className: 'grid grid-cols-1 md:grid-cols-3 gap-3' }, [
-        ...(routeAdvisor.allCandidateRoutes || []).map((r, idx) => {
-          const isRec = r.isRecommended;
-          return h('div', {
-            key: r.id || idx,
-            className: `p-3.5 rounded-2xl border transition flex flex-col justify-between gap-3 ${
-              isRec
-                ? 'bg-cyan-950/60 border-cyan-400 shadow-lg shadow-cyan-500/20'
-                : 'bg-slate-900 border-slate-800'
-            }`
-          }, [
-            h('div', { className: 'space-y-1.5' }, [
-              h('div', { className: 'flex items-center justify-between' }, [
-                h('span', { className: `text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full ${
-                  isRec ? 'bg-cyan-500 text-slate-950' : 'bg-slate-800 text-slate-400'
-                }` }, r.tag || `Route ${idx + 1}`),
-                h('span', { className: 'text-xs font-bold text-emerald-400' }, `Score: ${r.safetyScore}/100`)
-              ]),
-              h('div', { className: 'text-sm font-bold text-white' }, r.name),
-              h('div', { className: 'text-xs text-slate-300 flex items-center gap-2' }, [
-                h('span', null, r.formattedDistance),
-                h('span', null, '•'),
-                h('span', null, `~${r.walkingDurationMins} min walk`)
-              ]),
-              h('div', { className: 'text-[11px] text-slate-400' }, [
-                h('span', { className: r.hazardCount > 0 ? 'text-amber-400 font-semibold' : 'text-emerald-400' },
-                  `${r.hazardCount} Hazard(s) reported`
-                ),
-                h('span', null, ` • ${r.safeZonesNearRoute} Safe Zones near path`)
-              ])
-            ]),
-
-            h('button', {
-              onClick: () => handleAdoptRecommendedRoute(r),
-              className: `w-full py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 ${
-                isRec
-                  ? 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow'
-                  : 'bg-slate-800 hover:bg-slate-700 text-slate-300'
-              }`
-            }, [
-              h(Icons.Check, { className: 'w-3.5 h-3.5' }),
-              h('span', null, isRec ? 'Adopt Recommended Route' : 'Select This Route')
-            ])
-          ]);
-        })
-      ]),
-
-      h('div', { className: 'text-xs text-cyan-200 bg-cyan-950/40 p-2.5 rounded-xl border border-cyan-500/20' },
-        routeAdvisor.rationale
       )
+    ])
+  ])
     ]),
+
+  // 4. Route Advisor (3 Candidate Routes) Expansion
+  showRouteAdvisor && h('div', {
+    className: 'bg-slate-950/90 border border-cyan-500/40 rounded-2xl p-4 sm:p-5 space-y-4 animate-fadeIn relative z-10'
+  }, [
+    h('div', { className: 'flex items-center justify-between pb-2 border-b border-slate-800' }, [
+      h('div', { className: 'flex items-center gap-2' }, [
+        h(Icons.Compass, { className: 'w-4 h-4 text-cyan-400' }),
+        h('span', { className: 'text-xs font-bold text-white uppercase tracking-wider' }, 'AI Candidate Route Comparison')
+      ]),
+      h('span', { className: 'text-[11px] text-slate-400' }, 'Safety Score > Shortest Distance')
+    ]),
+
+    h('div', { className: 'grid grid-cols-1 md:grid-cols-3 gap-3' }, [
+      ...(routeAdvisor.allCandidateRoutes || []).map((r, idx) => {
+        const isRec = r.isRecommended;
+        return h('div', {
+          key: r.id || idx,
+          className: `p-3.5 rounded-2xl border transition flex flex-col justify-between gap-3 ${isRec
+              ? 'bg-cyan-950/60 border-cyan-400 shadow-lg shadow-cyan-500/20'
+              : 'bg-slate-900 border-slate-800'
+            }`
+        }, [
+          h('div', { className: 'space-y-1.5' }, [
+            h('div', { className: 'flex items-center justify-between' }, [
+              h('span', {
+                className: `text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full ${isRec ? 'bg-cyan-500 text-slate-950' : 'bg-slate-800 text-slate-400'
+                  }`
+              }, r.tag || `Route ${idx + 1}`),
+              h('span', { className: 'text-xs font-bold text-emerald-400' }, `Score: ${r.safetyScore}/100`)
+            ]),
+            h('div', { className: 'text-sm font-bold text-white' }, r.name),
+            h('div', { className: 'text-xs text-slate-300 flex items-center gap-2' }, [
+              h('span', null, r.formattedDistance),
+              h('span', null, '•'),
+              h('span', null, `~${r.walkingDurationMins} min walk`)
+            ]),
+            h('div', { className: 'text-[11px] text-slate-400' }, [
+              h('span', { className: r.hazardCount > 0 ? 'text-amber-400 font-semibold' : 'text-emerald-400' },
+                `${r.hazardCount} Hazard(s) reported`
+              ),
+              h('span', null, ` • ${r.safeZonesNearRoute} Safe Zones near path`)
+            ])
+          ]),
+
+          h('button', {
+            onClick: () => handleAdoptRecommendedRoute(r),
+            className: `w-full py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 ${isRec
+                ? 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow'
+                : 'bg-slate-800 hover:bg-slate-700 text-slate-300'
+              }`
+          }, [
+            h(Icons.Check, { className: 'w-3.5 h-3.5' }),
+            h('span', null, isRec ? 'Adopt Recommended Route' : 'Select This Route')
+          ])
+        ]);
+      })
+    ]),
+
+    h('div', { className: 'text-xs text-cyan-200 bg-cyan-950/40 p-2.5 rounded-xl border border-cyan-500/20' },
+      routeAdvisor.rationale
+    )
+  ]),
 
     // 5. "How did AI decide?" Transparent Factor Weights (Prompt Requirement #12)
     h('div', { className: 'pt-1 relative z-10' }, [
@@ -284,9 +282,10 @@ window.SAFEWALK_AI_PANEL = function(props) {
                 h('div', { className: 'font-semibold text-slate-200' }, f.name),
                 h('div', { className: 'text-[10px] text-slate-400' }, f.detail)
               ]),
-              h('span', { className: `font-mono font-bold px-2 py-0.5 rounded ${
-                f.type === 'positive' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-300'
-              }` }, f.points)
+              h('span', {
+                className: `font-mono font-bold px-2 py-0.5 rounded ${f.type === 'positive' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-300'
+                  }`
+              }, f.points)
             ])
           )
         ])
